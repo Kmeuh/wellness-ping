@@ -15,14 +15,10 @@ services:
       - wellness_ping_data:/app/data
     command: >
       sh -c "
-        cd /app &&
-        wget -O- https://github.com/micr0-dev/wellness-ping/archive/refs/heads/main.tar.gz | tar xz &&
-        cd wellness-ping-main &&
+        apk add --no-cache git &&
+        git clone https://github.com/micr0-dev/wellness-ping.git /app &&
         npm install &&
         npm run build &&
-        cp -r . /app/ &&
-        cd /app &&
-        rm -rf wellness-ping-main &&
         npm start
       "
 
