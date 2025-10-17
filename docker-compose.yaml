@@ -2,17 +2,29 @@ version: '3.8'
 
 services:
   wellness-ping:
-    build:
-      context: https://github.com/micr0-dev/wellness-ping.git
-      dockerfile: docker/Dockerfile
+    image: node:18-alpine
     container_name: wellness-ping
     restart: unless-stopped
+    working_dir: /app
     ports:
       - "3001:3000"
     environment:
       - NODE_ENV=production
+      - PORT=3000
     volumes:
       - wellness_ping_data:/app/data
+    command: >
+      sh -c "
+        cd /app &&
+        wget -O- https://github.com/micr0-dev/wellness-ping/archive/refs/heads/main.tar.gz | tar xz &&
+        cd wellness-ping-main &&
+        npm install &&
+        npm run build &&
+        cp -r . /app/ &&
+        cd /app &&
+        rm -rf wellness-ping-main &&
+        npm start
+      "
 
 volumes:
   wellness_ping_data:
