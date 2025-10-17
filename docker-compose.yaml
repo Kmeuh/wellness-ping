@@ -15,10 +15,19 @@ services:
       - wellness_ping_data:/app/data
     command: >
       sh -c "
-        apk add --no-cache git &&
-        git clone https://github.com/micr0-dev/wellness-ping.git /app &&
+        apk add --no-cache git curl &&
+        git clone https://github.com/micr0-dev/wellness-ping.git /tmp/repo &&
+        cd /tmp/repo &&
+        echo '=== STRUCTURE DU REPOSITORY ===' &&
+        find . -type f -name '*.json' | head -10 &&
+        echo '=== package.json ===' &&
+        cat package.json &&
+        echo '=== COPY TO /app ===' &&
+        cp -r /tmp/repo/* /app/ &&
+        cd /app &&
+        echo '=== INSTALLATION ===' &&
         npm install &&
-        npm run build &&
+        echo '=== DEMARRAGE ===' &&
         npm start
       "
 
