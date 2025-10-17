@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  wellness-ping:
+    image: ghcr.io/micr0-dev/wellness-ping:latest
+    container_name: wellness-ping
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=/app/data/wellness-ping.db
+      - PING_INTERVAL=3600000
+      - LOG_LEVEL=info
+    volumes:
+      - wellness_ping_data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wellness-ping.rule=Host(`wellness-ping.votredomaine.com`)"
+
+volumes:
+  wellness_ping_data:
