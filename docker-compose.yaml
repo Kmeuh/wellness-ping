@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   wellness-ping:
-    build: https://github.com/micr0-dev/wellness-ping.git
+    build:
+      context: https://github.com/micr0-dev/wellness-ping.git
+      dockerfile: docker/Dockerfile
     container_name: wellness-ping
     restart: unless-stopped
     ports:
